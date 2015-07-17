@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>APC40 mk2 欲しいホームページ</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+  <script src="dist/jquery.knob.min.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+  <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script>
+    $(function($) {
+      $(".knob").knob({
+        change : function (value) {
+            console.log("change : " + value);
+        },
+        release : function (value) {
+          //console.log(this.$.attr('value'));
+          console.log("release : " + value);
+        },
+        cancel : function () {
+          console.log("cancel : ", this);
+        },
+      /*format : function (value) {
+          return value + '%';
+        },*/
+        draw : function () {
+
+          // "tron" case
+          if(this.$.data('skin') == 'tron') {
+
+            this.cursorExt = 0.3;
+
+            var a = this.arc(this.cv)  // Arc
+            , pa                   // Previous arc
+            , r = 1;
+
+            this.g.lineWidth = this.lineWidth;
+
+            if (this.o.displayPrevious) {
+              pa = this.arc(this.v);
+              this.g.beginPath();
+              this.g.strokeStyle = this.pColor;
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
+              this.g.stroke();
+            }
+
+            this.g.beginPath();
+            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor ;
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
+            this.g.stroke();
+
+            this.g.lineWidth = 2;
+            this.g.beginPath();
+            this.g.strokeStyle = this.o.fgColor;
+            this.g.arc( this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+            this.g.stroke();
+
+            return false;
+          }
+        }
+      });
+    });
+  </script>
+  <script>
+    $(function() {
+      $( ".slider" ).slider({
+        orientation: "vertical",
+        range: "min",
+        min: 0,
+        max: 100,
+        value: 60,
+        slide: function( event, ui ) {
+          $( ".num" ).val( ui.value );
+            console.log("change : " +  ui.value);
+        }
+      });
+      $( ".num" ).val( $( ".slider" ).slider( "value" ) );
+    });
+  </script>
+  <script>
+  function hexFromRGB(r, g, b) {
+    var hex = [
+      r.toString( 16 ),
+      g.toString( 16 ),
+      b.toString( 16 )
+    ];
+    $.each( hex, function( nr, val ) {
+      if ( val.length === 1 ) {
+        hex[ nr ] = "0" + val;
+      }
+    });
+    return hex.join( "" ).toUpperCase();
+  }
+
+
+  $(function() {
+    $( "#x-fader" ).slider({
+      slide: function( event, ui ) {
+        $( "#x-fader" ).val( ui.value );
+          console.log("change : " +  ui.value);
+
+          var red = $( "#x-fader" ).slider( "value")*2.5,
+            green = 0,
+            blue = 0,
+            hex = hexFromRGB( red, green, blue );
+          $( "body" ).css( "background-color", "#" + hex );
+
+        }
+
+    });
+  });
+  </script>
+
+<style>
+  .APC40mkII{
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    padding: 20px; border-radius: 20px;background:#000; margin: 50px auto; display: table; margin-top: 50px;}
+
+  li { list-style:none; display:table; margin: 0 auto; }
+  body{
+    padding: 0;
+    margin: 20px 50px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    text-rendering: optimizelegibility;
+  }
+  table{  border-spacing: 0px;}
+  div.head-knob{text-align: center; width: 65px; height:65px; float: left; overflow: hidden}
+  .slider{float:left;margin:15px 0px;height:120px}
+  .slider.ui-slider.ui-slider-vertical.ui-widget.ui-widget-content.ui-corner-all>a{width: 52px; left: -21px; height:6px;  border-width: 8px 1px; border-color: black; border-left-color: white; border-right-color: white;}
+  .ui-slider.ui-slider-horizontal.ui-widget.ui-widget-content.ui-corner-all>a{height:52px;top:-21px; width:6px; border-width: 1px 8px; border-color: black; border-top-color: white; border-bottom-color: white;}
+  .pad{width:60px; height:20px;margin:3px 0px;background:white; border-radius: 3px;}
+  .right .pad{width:30px; height:10px;margin:9px 17px;background:#999; border-radius: 1px;}
+  .mtrx-pad{}
+  .master-pad{width:40px;}
+  .clipstop{width:40px;margin:4px 10px;}
+  .mini-pad{width:26px;margin:3px 4px;}
+  .pad:hover{background: red}
+
+
+  .ui-widget-header,
+  .ui-widget-content{background:black;}
+
+</head>
+<body style="background:#a00">
+  <div class="APC40mkII">
+    <!-- ひだりりりりりりりりりりいいいいいりりいりりりりり -->
+    <div style="display:table-cell">
+      <table>
+        <tr>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad mtrx-pad"></div></li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li>
+              <div style="display:table">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+            </li>
+            <li><div class="slider"></div></li>
+          </td>
+          <td class="master">
+            <li style="height: 64px;"></li>
+            <li><div class="pad master-pad"></div></li>
+            <li><div class="pad master-pad"></div></li>
+            <li><div class="pad master-pad"></div></li>
+            <li><div class="pad master-pad"></div></li>
+            <li><div class="pad master-pad"></div></li>
+            <li><div class="pad master-pad" style="margin:4px 10px;"></div></li>
+            <li><div class="pad master-pad"></div></li>
+            <li><div class="head-knob" style="height:50px">
+                <input class="knob" data-width="50" data-cursor=true data-fgColor="#ddd" value="35" data-skin="tron" data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="slider" style="margin-top:17px;"></div></li>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- みぎぎぎぎぎぎぎぎぎっぎぎぎぎいぎｇ -->
+    <div class="right" style="display:table-cell; vertical-align:top">
+      <table>
+        <tr>
+          <td colspan="4" style="height:46px; color:white">
+            <h2 style="float:right; margin: 0;">APC40mkII</h2>
+          </td>
+        <tr>
+        <tr>
+          <td>
+            <li><div class="pad clipstop" style="margin-top: 19px;"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad clipstop"></div></li>
+          </td>
+          <td>
+            <li><div class="pad clipstop" style="height:20px"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad clipstop"></div></li>
+          </td>
+          <td>
+            <li><div class="pad clipstop" style="background:#b00; height:20px"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad clipstop"></div></li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad clipstop"></div></li>
+          </td>
+          <td style="vertical-align:top">
+            <li><div class="pad clipstop" style="background:#b00; height:20px"></div></li>
+            <li>
+              <div class="head-knob" style="height:57px">
+                <input class="knob" data-width="50" data-cursor=true data-fgColor="#ddd" value="35" data-skin="tron" data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li>
+              <div class="head-knob">
+                <input class="knob" data-width="70" data-angleOffset=-125 data-angleArc=250 data-fgColor="#f33" value="35" data-skin="tron"data-thickness=".3" data-displayInput=false>
+              </div>
+            </li>
+            <li><div class="pad clipstop"></div></li>
+            <li><div class="pad clipstop"></div></li>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div style="height:60px">
+              <div style="height:40px">
+              <table>
+                <tr>
+                  <td rowspan="2">
+                    <div class="pad" style="width: 100%; height: 40px; margin: 0 16px; background:#333"></div>
+                  </td>
+                  <td>
+                    <div class="pad" style="width: 100%; height: 20px; margin: 0 16px; background:#333"></div>
+                  </td>
+                  <td rowspan="2">
+                    <div class="pad" style="width: 100%; height: 40px; margin: 0 16px; background:#333"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="pad" style="width: 100%; height: 20px; margin: 0 16px; background:#333"></div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+  
+            </div>
+          </td>
+          <td colspan="2" style="vertical-align: top;">
+            <div style="display:table;">
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+                <div style="display:table-cell"><div class="pad mini-pad"></div></div>
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+          <td colspan="3">
+            <div style="height:40px; margin:10px 30px 0px 40px">
+
+              <div id="x-fader"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+        
+</body>
+</html>
